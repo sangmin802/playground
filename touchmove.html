@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <style>
+        .wrap {
+            width : 700px;
+            height : 382.16px;
+            position : relative;
+        }
+        .slide {
+            position : relative;
+            width : 100%;
+            height : 100%;
+            overflow : hidden;
+            margin : 0 auto;
+        }
+        .slide_item {
+            width : 700px;
+            height : auto;
+            position : absolute;
+        }
+        .slide_item img {
+            display : block;
+            width : 100%;
+            -webkit-user-drag : none;
+            user-select : none;
+        }
+        .btn {
+            position : absolute;
+            width : 25px;
+            height : 25px;
+            border-bottom : 3px solid black;
+            border-right : 3px solid black;
+            transform : rotate(-45deg);
+            left : 50%;
+            margin-left : 300px;
+            bottom : 20px;
+            cursor : pointer;
+        }
+        .prev {
+            transform : rotate(135deg);
+            margin-left : -325px;
+        }
+    </style>
+    <title>Touchmove</title>
+</head>
+<body>
+    <div class="wrap">
+        <div class="slide">
+            <div class="slide_item5 slide_item">
+                <img src="img/bighero.jpg">
+            </div>
+            <div class="slide_item1 slide_item">
+                <img src="img/zootopia.jpg">
+            </div>
+            <div class="slide_item2 slide_item">
+                <img src="img/lapunzel.jpg">
+            </div>
+            <div class="slide_item3 slide_item">
+                <img src="img/up.jpg">
+            </div>
+            <div class="slide_item4 slide_item">
+                <img src="img/winter.jpg">
+            </div>
+        </div>
+        <div class="prev btn"></div>
+        <div class="next btn"></div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            var width = $('.slide_item').width();
+            var length = $('.slide_item').length;
+            var count = 0;
+            var timer = 800;
+            var slide = false;
+            var startX, endX, PCstartX, PCendX;
+            var mouseon = false;
+            // 초기 left 위치
+            for(var i = 0; i < length; i++){
+                $('.slide_item').eq(i).css('left', width * (i-1));
+            }
+
+            // 반응형 터치스와이퍼
+            $(document).on('touchstart', '.slide', function(e){
+                // 손가락을 찍었을 때의 X좌표
+                startX = e.originalEvent.touches[0].pageX;
+            })
+
+            $(document).on('touchmove', '.slide', function(e){
+                // 손가락을 찍고 이동할 때의 좌표들
+                endX = e.originalEvent.touches[0].pageX;
+
+                // 찍었을 때의 좌표 - 이동할 때의 좌표들
+                var gap = startX - endX;
+                if(gap < 0){
+                    $('.prev').trigger('click');
+                }else{
+                    $('.next').trigger('click');
+                }
+            })
+
+            // PC 터치스와이퍼
+            $(document).on('mousedown', '.slide', function(e){
+                // 마우스가 눌린상태가 아니고, 스와이퍼가 작동중이지 않을떄
+                if(mouseon==false){
+                    mouseon = true; // 마우스는 눌리게되고
+                    PCstartX = e.originalEvent.pageX;
+                }
+            })
+
+            $(document).on('mouseup', '.slide', function(e){
+                // 마우스를 떼면 안눌린 상태로 변경
+                mouseon = false;
+                console.log('mouseup')
+            })
+
+            $(document).on('mousemove', '.slide', function(e){
+                if(mouseon == true){ // 마우스가 눌린 상태일 때
+                    PCendX = e.originalEvent.pageX;   
+                    if(PCstartX>0){ // 스와이퍼가 작동중이지 않을 때
+                        var PCgap = PCstartX - PCendX;
+                        var PCgap_check = PCgap
+                        if(PCgap_check < 0){
+                            PCgap_check = -(PCgap_check);
+                        }
+                        if(PCgap_check > 30){
+                            if(PCgap < 0){
+                                $('.prev').trigger('click');
+                            }else{
+                                $('.next').trigger('click');
+                            }
+                        }
+                    }
+                }
+            })
+
+            // 기본설정
+            $(document).on('click', '.next', function(){
+                if(!slide){
+                    slide=true;
+                    count++;
+                    count=count%length;
+                    next(count);
+                }
+            })
+
+            $(document).on('click', '.prev', function(){
+                if(!slide){
+                    slide=true;
+                    count--;
+                    count=count%length;
+                    if(count==-1){
+                        count=4;
+                    }
+                    prev(count);
+                }
+            })
+
+            function next(_count){
+                $('.slide_item').animate({
+                    left : '-='+width
+                }, {
+                    duration : timer,
+                    complete : function(){
+                        $('.slide_item').eq(_count-1).css('left', width*(length-2));
+                        slide=false;
+                        mouseon = false; // 슬라이드 이동이 끝나야 마우스는 안눌린상태가 된다
+                    }
+                })
+            }
+
+            function prev(_count){
+                $('.slide_item').animate({
+                    left : '+='+width
+                }, {
+                    duration : timer,
+                    complete : function(){
+                        $('.slide_item').eq(count).css('left', -width);
+                        slide=false;
+                        mouseon = false; // 슬라이드 이동이 끝나야 마우스는 안눌린상태가 된다
+                    }
+                })
+            }            
+        })
+    </script>
+</body>
+</html>
