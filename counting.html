@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="num"></div>
+    
+    <script>
+        var i = 1;
+        counting(3248965, 1);
+        function counting(max, timer){
+            setInterval(function(){
+                if(i<max){
+                    i++;
+                    document.getElementById('num').innerHTML=i;
+                }
+            }, timer)
+        }
+    </script>
+</body>
+</html>
