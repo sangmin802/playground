@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            text-align : center;
+            padding-top : 50px;
+        }
+        .btn {
+            background : tomato;
+            color : white;
+            padding : 10px;
+            font-weight : bold;
+        }
+    </style>
+</head>
+<body>
+    <span class="btn">
+        count
+    </span>
+
+    <script>
+        const click_event = document.getElementsByClassName('btn')[0];
+        var i = 0;
+        // const i = 0; // 아래의 이벤트를 작동시킬 수 없음(변수로서의 기능 X)
+
+        click_event.onclick = function(){
+            if(i < 100){
+                i++;
+            }
+            console.log(i);
+        }
+    </script>
+</body>
+</html>
