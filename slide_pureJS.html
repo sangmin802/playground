@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin : 0;
+            padding : 0;
+        }
+        .wrap {
+            width : 700px;
+            height : 382.16px;
+            position : relative;
+        }
+        .slide {
+            position : relative;
+            width : 100%;
+            height : 100%;
+            overflow : hidden;
+            margin : 0 auto;
+        }
+        .slide_item {
+            width : 700px;
+            height : auto;
+            position : absolute;
+        }
+        .slide_item img {
+            display : block;
+            width : 100%;
+            -webkit-user-drag : none;
+            user-select : none;
+        }
+    </style>
+    <title>Touchmove</title>
+</head>
+<body>
+    <div class="wrap">
+        <div class="slide">
+            <div class="slide_item5 slide_item">
+                <img src="img/bighero.jpg">
+            </div>
+            <div class="slide_item1 slide_item">
+                <img src="img/zootopia.jpg">
+            </div>
+            <div class="slide_item2 slide_item">
+                <img src="img/lapunzel.jpg">
+            </div>
+            <div class="slide_item3 slide_item">
+                <img src="img/up.jpg">
+            </div>
+            <div class="slide_item4 slide_item">
+                <img src="img/winter.jpg">
+            </div>
+        </div>
+    </div>
+    <script>
+        let t = document.querySelector('.slide');
+        let item = document.querySelectorAll('.slide_item');
+        let width = document.querySelectorAll('.slide_item')[0].getBoundingClientRect().width;
+        let slide = false;
+        let start, end;
+        let count = 0;
+
+        Array.from(item).map((res, index) => {
+            res.style.left = -width+(width*index)+'px';
+        })
+
+        // PC
+        t.addEventListener('mousedown', function(e){
+            start = e.screenX;
+        })
+
+        t.addEventListener('mouseup', function(e){
+            end = e.screenX;
+            if(start - end > 100 && slide === false){
+                slide = true;
+                next();
+                setTimeout(() => {
+                    slide = false;
+                }, 1500)
+            }else if(start - end < -100 && slide === false){
+                slide = true;
+                prev();
+                setTimeout(() => {
+                    slide = false;
+                }, 1500)                
+            }
+        })
+
+        // Mobile
+        t.addEventListener('touchstart', function(e){
+            start = e.touches[0].screenX;
+        })
+
+        t.addEventListener('touchmove', function(e){
+            end = e.touches[0].screenX;
+            if(start - end > 150 && slide === false){
+                slide = true;
+                next();
+                setTimeout(() => {
+                    slide = false;
+                }, 1500)
+            }else if(start - end < -150 && slide === false){
+                slide = true;
+                prev();
+                setTimeout(() => {
+                    slide = false;
+                }, 1500)                
+            }
+        })
+
+        function next(){
+            Array.from(item).map((res, index) => {
+                const pre = Number(res.style.left.replace('px', ''));
+                res.animate([
+                    {left : pre+'px'},
+                    {left : pre-width+'px'},
+                ], {
+                   duration : 1500,
+                   easing : 'ease-in-out',
+                   iterations : 1,
+                   fill : 'forwards'
+                })
+                res.style.left = pre - width+'px';
+                if(index === count){
+                    res.style.left = width*(item.length-2)+'px';
+                }
+            })
+            count ++;
+            count = count % item.length;
+        }
+
+        function prev(){
+            count --;
+            if(count === -1){
+                count = 4;
+            }
+            Array.from(item).map((res, index) => {
+                let pre = Number(res.style.left.replace('px', ''));
+                res.animate([
+                    {left : pre+'px'},
+                    {left : pre+width+'px'},
+                ], {
+                   duration : 1500,
+                   easing : 'ease-in-out',
+                   iterations : 1,
+                   fill : 'forwards'
+                })
+                res.style.left = pre + width+'px';
+                if(index === count){
+                    res.style.left = -width+'px';
+                }
+            })
+        }
+    </script>
+</body>
+</html>
