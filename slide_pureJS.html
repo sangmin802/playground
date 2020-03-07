@@ -27,6 +27,9 @@
             height : auto;
             position : absolute;
         }
+        .addTransition {
+          transition : .1s;
+        }
         .slide_item img {
             display : block;
             width : 100%;
@@ -63,6 +66,7 @@
         let slide = false;
         let start, end;
         let count = 0;
+        let gap = null;
 
         Array.from(item).map((res, index) => {
             res.style.left = -width+(width*index)+'px';
@@ -80,13 +84,13 @@
                 next();
                 setTimeout(() => {
                     slide = false;
-                }, 1500)
+                }, 500)
             }else if(start - end < -100 && slide === false){
                 slide = true;
                 prev();
                 setTimeout(() => {
                     slide = false;
-                }, 1500)                
+                }, 500)                
             }
         })
 
@@ -96,33 +100,70 @@
         })
 
         t.addEventListener('touchmove', function(e){
-            end = e.touches[0].screenX;
-            if(start - end > 150 && slide === false){
+          end = e.touches[0].screenX;
+          gap = start-end;
+          if(slide === false){
+            Array.from(item).map(res => {
+              res.style.transform = `translateX(${-gap}px)`;
+            })
+          }
+        })
+        // 1. 일단 마우스 움직임에 따라 transformX 속성값을 주어 따라움직이게 함.
+
+        t.addEventListener('touchend', moving)
+        t.addEventListener('touchout', moving)
+        
+        // 2. 마우스를 떼거나, 정해진 element 밖으로 나갔을 때, moving 함수 실행.
+
+        function moving(){
+          if(gap < -150 || gap > 150){
+            if(slide === false){
+              if(gap > 150){
                 slide = true;
                 next();
                 setTimeout(() => {
                     slide = false;
-                }, 1500)
-            }else if(start - end < -150 && slide === false){
+                }, 250)
+              }else if(gap < -150){
                 slide = true;
                 prev();
                 setTimeout(() => {
                     slide = false;
-                }, 1500)                
+                }, 250)                
+              }
+              Array.from(item).map(res => {
+                res.style.transform = `translateX(${0}px)`;
+                res.classList.remove('addTransition');
+              })
             }
-        })
+          }else{
+            returnTrans(100);
+          }
+        }
+
+        // 3. 마우스 이동거리가 일정 범위일 경우, next 혹은 prev 함수 실행. 범위 밖일경우, trasnform 값을 초기화시킴. 이때, 돌아갈때만 transition 추가하고 도착하면 제거
+
+        returnTrans = (count) => {
+          Array.from(item).map(res => {
+            res.classList.add('addTransition');
+            res.style.transform = `translateX(${0}px)`;
+          })
+          setTimeout(() => {
+            Array.from(item).map(res => {
+              res.classList.remove('addTransition');
+            })
+          }, count)
+        }
 
         function next(){
             Array.from(item).map((res, index) => {
                 const pre = Number(res.style.left.replace('px', ''));
                 res.animate([
-                    {left : pre+'px'},
+                    {left : pre-gap+'px'},
                     {left : pre-width+'px'},
                 ], {
-                   duration : 1500,
+                   duration : 200,
                    easing : 'ease-in-out',
-                   iterations : 1,
-                   fill : 'forwards'
                 })
                 res.style.left = pre - width+'px';
                 if(index === count){
@@ -141,20 +182,22 @@
             Array.from(item).map((res, index) => {
                 let pre = Number(res.style.left.replace('px', ''));
                 res.animate([
-                    {left : pre+'px'},
+                    {left : pre-gap+'px'},
                     {left : pre+width+'px'},
                 ], {
-                   duration : 1500,
+                   duration : 200,
                    easing : 'ease-in-out',
-                   iterations : 1,
-                   fill : 'forwards'
                 })
+                
                 res.style.left = pre + width+'px';
                 if(index === count){
                     res.style.left = -width+'px';
                 }
             })
         }
-    </script>
+
+        // 4. next, prev 작동시, 기존 transform을 통해 이동한 값을 기존의 left값에서 빼준 다음, 그것이 기준이 되어 필요한 만큼만 움직이도록 함.
+        // 5. 이동이 완료되었다면, 정해진 위치로 강제로 left값을 주고, transform 값을 0으로 바꿔줌
+  </script>
 </body>
 </html>
