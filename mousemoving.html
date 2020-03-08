@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      padding : 0;
+      margin : 0;
+    }
+    .wrap {
+      position : relative;
+      width : 936px;
+      height : 511px;
+      overflow : hidden;
+    }
+    .wrap > div {
+      width : 100%;
+      height : 100%;
+      position : absolute;
+      left : 0;
+      top : 0;
+      background : url('./img/winter.jpg') no-repeat;
+    }
+    .opacity50 {
+      opacity : 0.3;
+    }
+    .wrap .opacity100 {
+      width : 80px;
+      height : 80px;
+      position : absolute;
+      border-radius : 50%;
+      background-attachment : fixed;
+      opacity : 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="opacity50"></div>
+    <div class="opacity100"></div>
+  </div>
+  <script>
+    const frame = document.querySelector('.wrap');
+    const mouse = document.querySelector('.opacity100');
+
+    frame.addEventListener('mousemove', (e) => {
+      console.log('?')
+      const preLeft = mouse.clientLeft;
+      const preTop = mouse.clientTop;
+      let left = e.clientX;
+      let top = e.clientY;
+      if(left <= 40){
+        left = 40;
+      }else if(left >= 896){
+        left = 896;
+      }
+      if(top <= 40){
+        top = 40;
+      }else if(top >= 471){
+        top = 471;
+      }
+      mouse.style.left = `${left-40}px`;
+      mouse.style.top = `${top-40}px`;
+    })
+
+    mouse.addEventListener('mousedown', scaleUp)
+    mouse.addEventListener('mouseup', scaleDown)
+    frame.addEventListener('mouseout', scaleDown)
+
+    function scaleUp(){
+      mouse.style.transform = 'scale(2)';
+    }
+    function scaleDown(){
+      mouse.style.transform = '';
+    }
+  </script>
+</body>
+</html>
