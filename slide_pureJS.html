@@ -67,6 +67,7 @@
         let start, end;
         let count = 0;
         let gap = null;
+        let mousedown = false;
 
         Array.from(item).map((res, index) => {
             res.style.left = -width+(width*index)+'px';
@@ -75,23 +76,37 @@
         // PC
         t.addEventListener('mousedown', function(e){
             start = e.clientX;
+            mousedown = true;
         })
 
         t.addEventListener('mouseup', function(e){
             end = e.clientX;
-            if(start - end > 100 && slide === false){
+            mousedown = false;
+            if(start - end > 150 && slide === false){
                 slide = true;
                 next();
                 setTimeout(() => {
                     slide = false;
-                }, 500)
-            }else if(start - end < -100 && slide === false){
+                }, 250)
+            }else if(start - end < -150 && slide === false){
                 slide = true;
                 prev();
                 setTimeout(() => {
                     slide = false;
-                }, 500)                
+                }, 250)                
+            }else{
+              returnTrans(100);
             }
+        })
+        t.addEventListener('mousemove', (e) => {
+          if(mousedown){
+            if(!slide){
+              gap = start-e.clientX;
+              Array.from(item).map(res => {
+                res.style.transform = `translateX(${-gap}px)`;
+              })
+            }
+          }
         })
 
         // Mobile
@@ -131,10 +146,6 @@
                     slide = false;
                 }, 250)                
               }
-              Array.from(item).map(res => {
-                res.style.transform = `translateX(${0}px)`;
-                res.classList.remove('addTransition');
-              })
             }
           }else{
             returnTrans(100);
@@ -143,7 +154,7 @@
 
         // 3. 마우스 이동거리가 일정 범위일 경우, next 혹은 prev 함수 실행. 범위 밖일경우, trasnform 값을 초기화시킴. 이때, 돌아갈때만 transition 추가하고 도착하면 제거
 
-        returnTrans = (count) => {
+        function returnTrans(count){
           Array.from(item).map(res => {
             res.classList.add('addTransition');
             res.style.transform = `translateX(${0}px)`;
@@ -170,6 +181,10 @@
                     res.style.left = width*(item.length-2)+'px';
                 }
             })
+            Array.from(item).map(res => {
+              res.style.transform = `translateX(${0}px)`;
+              res.classList.remove('addTransition');
+            })
             count ++;
             count = count % item.length;
         }
@@ -193,6 +208,10 @@
                 if(index === count){
                     res.style.left = -width+'px';
                 }
+            })
+            Array.from(item).map(res => {
+              res.style.transform = `translateX(${0}px)`;
+              res.classList.remove('addTransition');
             })
         }
 

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      box-sizing : border-box;
+    }
+    .fileLabel {
+      display : block;
+      width : 500px;
+      height : 300px;
+      background : #eaeaea;
+      text-align : center;
+      line-height : 300px;
+      border : 2px solid #666666;
+    }
+    input {
+      display : none;
+    }
+
+    .dragTarget {
+      border : 2px dashed #666666;
+    }
+
+    .uploadedImg {
+      display : inline-block;
+      width : 150px;
+      height : 80px;
+      padding-top : 5px;
+    }
+    .uploadedImg img {
+      display : block;
+      width : 100%;
+      height : 100%;
+    }
+  </style>
+</head>
+<body>
+  <label for="file" class="fileLabel">
+    Upload File
+  </label>
+  <input type="file" id="file">
+  <div class="uploadedFile">
+
+  </div>
+
+  <script>
+    const allDragEvent = ['dragenter', 'dragover', 'dragleave', 'drop'];
+    const dragInEvent = ['dragenter', 'dragover'];
+    const dragOutEvent = ['dragleave', 'drop'];
+    const target = document.querySelector('.fileLabel');
+    const uploadedFile = document.querySelector('.uploadedFile')
+
+    allDragEvent.forEach(event => {
+      target.addEventListener(event, eventReset);
+    })
+    dragInEvent.forEach(event => {
+      target.addEventListener(event, () => {
+        target.classList.add('dragTarget');
+      })
+    })
+    dragOutEvent.forEach(event => {
+      target.addEventListener(event, ({dataTransfer : {files}}) => {
+        target.classList.remove('dragTarget');
+        Array.from(files).forEach(file => {
+          const fileReader = new FileReader();
+          fileReader.readAsDataURL(file);
+          fileReader.onload = ({target : {result}}) => {
+            uploadedFile.innerHTML+=`
+            <div class="uploadedImg">
+              <img src="${result}">
+            </div>
+            `
+          }
+        })
+      })
+    })
+
+    function eventReset(e){
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  </script>
+</body>
+</html>
