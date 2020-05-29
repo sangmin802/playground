@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .position-margin {
+      background : green;
+      width : 50px;
+      height : 50px;
+      position: absolute;
+      /* 원래대로라면, absolute의 속성때문에 부모의 영역을 감지할 수 없게되지만, 사방을 0으로 넓혀주어서 부모의 영역을 잡아주면 margin 0 auto가 가능함. */
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+    }
+    .position-transform {
+      position: absolute;
+      background : red;
+      width : 100px;
+      height : 100px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      /* 원래는 margin-left등으로 너비의 반을 주었지만, 너비를 측정할 수 없을경우 이렇게하면 될듯. 그냥 이게 더 좋은방법인듯! */
+    }
+    .text {
+      border : 1px solid #eaeaea;
+      text-align : center;
+      padding : 3em 0;
+      /* em은 내부크기의 배수를 의미하는데, 상하 padding을 3배인 3em을 주어 세로정렬 line-height보다 좋음. 폰트크기에 따라 유동적으로 바뀜 */
+    }
+  </style>
+</head>
+<body>
+  <div class="text">
+    <span>가운데정렬</span>
+  </div>
+  <div class="position-margin"></div>
+  <div class="position-transform"></div>
+  <div class="flex">
+    <div></div>
+  </div>
+</body>
+</html>
