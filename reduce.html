@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    const db = [
+      { id : 1, main : false, name : '정지찬', age : 26 },
+      { id : 2, main : true, name : '김원빈', age : 22 },
+      { id : 3, main : false, name : '김준성', age : 26 },
+      { id : 4, main : false, name : '김명회', age : 26 },
+      { id : 5, main : false, name : '박상혁', age : 25 },
+    ]
+
+    // 날것의 db를 main true, false로 구분, false라면 나이순으로 구분
+    const result = db.reduce((arr, info, index) => {
+      if(arr.length === 0){
+        arr[0] = {type : 'noMain', db : []};
+        arr[1] = {type : 'Main', db : []};
+      };
+      const [noMain, Main] = arr;
+      if(info.main){
+        Main.db.push(info);
+      }else{
+        const age = arr[0].db.map(res => {
+          return res.age;
+        })
+        if(!age.includes(info.age)){
+          noMain.db.push({
+            age : info.age,
+            detDb : [info]
+          });
+        }else{
+          noMain.db.find(res => {
+            if(res.age === info.age){
+              res.detDb.push(info);
+            };
+          });
+        };
+      };
+      return arr;
+    }, []);
+    
+    // 나이 오름차순으로 정렬
+    result[0].db.sort((a,b) => {
+      return a.age - b.age;
+    })
+    console.log(result)
+  </script>
+</body>
+</html>
