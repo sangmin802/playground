@@ -17,10 +17,10 @@
 
     // 날것의 db를 main true, false로 구분, false라면 나이순으로 구분
     const result = db.reduce((arr, info, index) => {
-      if(arr.length === 0){
-        arr[0] = {type : 'noMain', db : []};
-        arr[1] = {type : 'Main', db : []};
-      };
+      arr.length === 0 ? 
+        ['noMain', 'Main'].forEach(res => {
+          arr.push({type : res, db : []})
+        }) : null;
       const [noMain, Main] = arr;
       if(info.main){
         Main.db.push(info);
