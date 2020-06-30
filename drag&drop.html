@@ -64,6 +64,8 @@
     })
     dragOutEvent.forEach(event => {
       target.addEventListener(event, ({dataTransfer : {files}}) => {
+        // console.log(files)
+        // 본래 files는 uniteralbe객체라 Array.from메소드가 안먹히지만, 확인해보니 [Symbol.iterator]를 설정해줬음. 그래서 가능
         target.classList.remove('dragTarget');
         Array.from(files).forEach(file => {
           const fileReader = new FileReader();
@@ -78,6 +80,16 @@
         })
       })
     })
+
+    // const uniterObj = {
+    //   0 : 'zero',
+    //   1 : 'one',
+    //   2 : 'two',
+    //   *[Symbol.iterator](){
+    //     for(let key in this) yield this[key]
+    //   }
+    // }  
+    // console.log(Array.from(uniterObj))
 
     function eventReset(e){
       e.preventDefault();
