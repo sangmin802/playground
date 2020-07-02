@@ -7,30 +7,55 @@
 </head>
 <body>
   <script>
-    const func1 = (num) => {
+    // 무조건 promse객체를 반환해야함
+    function func(num){
       return new Promise((res, rej) => {
-        res(num+1)
+        setTimeout(() => {
+          console.log(num++);
+          res(num)
+        }, 1000)
       })
     }
-    const func2 = (num) => {
-      return num+1;
+    function func2(num){
+      console.log(num)
+      return new Promise((res, rej) => {
+        setTimeout(() => {
+          num = num*2
+          console.log(num);
+          res(num);
+        }, 1000)
+      })
     }
-    const func3 = (num) => {
-      return num+1;
-    }
-    const func4 = (num) => {
-      return num+1;
-    }
-    const func5 = (num) => {
-      return num+1;
+    function func3(num){
+      console.log(num)
+      return new Promise((res, rej) => {
+        setTimeout(() => {
+          num = num*10;
+          console.log(num);
+          res(num);
+        }, 1000)
+      })
     }
 
-    console.log(func1(1)
+    func(1)
     .then(num => func2(num))
     .then(num => func3(num))
-    .then(num => func4(num))
-    .then(num => func5(num))
-    .then(result => console.log(result)));
+
+
+    function promise(num){
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          console.log(num++);
+          resolve(num++);
+        }, 1000)
+      })
+    }
+
+    promise(1)
+    .then(num => promise(num))
+    .then(num => promise(num))
+    .then(num => promise(num))
+    .then(num => promise(num))
   </script>
 </body>
 </html>
