@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<img src="http://cdn-lostark.game.onstove.com/EFUI_IconAtlas/HT_Item/HT_Item_01_48.png" alt="">
+
+<body>
+  <script>
+    fetch(`https://cors-anywhere.herokuapp.com/https://lostark.game.onstove.com/Profile/Character/${encodeURIComponent('군인시절')}`)
+    .then(res => res.text())
+    .then(data => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(data, 'text/html')
+      const body = doc.getElementsByTagName('body')
+      const script = body[0].getElementsByTagName('script')
+      const item = script[0];
+      // console.log(data)
+      if(item.childNodes[0].data.length===1){
+        console.log('아이템정보 없음')
+      }else{
+        const equipWrap = body[0].getElementsByClassName('profile-equipment__slot')[0];
+        const equipImgWrap = {};
+        [...equipWrap.childNodes].forEach((res, index) => {
+          // if(res.childNodes[0].nod)
+          const validNode = res.childNodes[0]
+          if(validNode){
+            if(validNode.nodeName === 'IMG'){
+              equipImgWrap[res.classList[0]] = validNode.attributes.src.nodeValue
+            }
+            return
+          }
+          return
+        })
+        console.log(equipImgWrap) // 장비 이미지
+        console.log(JSON.parse(item.childNodes[0].data.replace('$.Profile = {', '{').replace('};', "}")).Equip) // 장비 정보
+      }
+    })
+  </script>
+</body>
+</html>
