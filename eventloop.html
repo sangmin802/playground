@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button>클릭</button>
+    <script>
+      function promise() {
+        return new Promise((res, rej) => {
+          fetch("./json/json1.json")
+            .then(json => {
+              console.log("fetch의 비동기 then1");
+              return json.json();
+            })
+            .then(data => {
+              console.log("fetch의 비동기 then2");
+              return res();
+            });
+          // res();
+        });
+      }
+
+      function microTaskDone(num) {
+        console.log(`MicroTask done`);
+      }
+
+      function task() {
+        setTimeout(() => {
+          console.log("Task done");
+        });
+      }
+
+      function done() {
+        console.log("Stack Done");
+      }
+
+      function start() {
+        // promise().then(microTaskDone);
+        Promise.resolve().then(() => {
+          console.log("MicroTask done");
+        });
+
+        task();
+
+        done();
+      }
+
+      start();
+      console.log("main done");
+      // document.querySelector("button").addEventListener(
+      //   "click",
+      //   (() => {
+      //     console.log("Clicked!");
+      //   })()
+      // );
+      // 이거 node.js에서 작동시켜보면, fetch undefinted 에러 이후에 task done 문구가 나옴.
+      // 즉, microtask에 담겨있던
+      // (res, rej) => {
+      //     fetch("./json/json1.json")
+      //       .then(json => json.json())
+      //       .then(res);
+      //   }
+      // 콜백이 task의 'task don'e보다 먼저 실행되고, fetch.then이 web api로 넘어가면서 stack에서 task를 부르고, microtask가 비어있어서 task가 실행되는 것
+
+      // setTimeout(() => {
+      //   console.log("Task done");
+      // });
+
+      // Promise.resolve().then(() => {
+      //   console.log("MicroTask done");
+      // });
+
+      // console.log("Stack done");
+    </script>
+  </body>
+</html>

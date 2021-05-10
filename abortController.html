@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button class="fetch">Fetch</button>
+    <button class="abort">Abort</button>
+    <script>
+      const $fetch = document.querySelector(".fetch");
+      const $abort = document.querySelector(".abort");
+      let controller = null;
+      let signal = null;
+      $fetch.addEventListener("click", () => {
+        controller?.abort();
+        controller = new AbortController();
+        signal = controller.signal;
+        fetch("https://loa-hands-server.herokuapp.com/loa-hands/timer", {
+          signal,
+        })
+          .then(res => res.json())
+          .then(data => {
+            console.log(data);
+          })
+          .catch(e => {
+            console.log(e.message);
+          });
+      });
+    </script>
+  </body>
+</html>
