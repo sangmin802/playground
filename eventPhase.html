@@ -8,16 +8,18 @@
     <style></style>
   </head>
   <body>
-    <div class="grandParent">
-      <div class="parent">
-        React
-        <div class="child">React is...</div>
+    <div class="grandParent" data-grandparent>
+      grandParent
+      <div class="parent" data-parent>
+        parent
+        <div class="child" data-child>child</div>
       </div>
     </div>
     <script>
       const grandParent = document.querySelector(".grandParent");
       const parent = document.querySelector(".parent");
       const child = document.querySelector(".child");
+
       window.addEventListener(
         "click",
         e => {
@@ -26,16 +28,24 @@
         }
         // { capture: true }
       );
-      grandParent.addEventListener("click", e => {
-        // e.stopPropagation();
-        console.log("grandParent is clicked");
-      });
-      parent.addEventListener("click", e => {
-        // e.stopPropagation();
-        console.log(`parent is clicked`);
-      });
+      grandParent.addEventListener(
+        "click",
+        e => {
+          // e.stopPropagation();
+          console.log("grandParent is clicked");
+        },
+        { capture: true }
+      );
+      parent.addEventListener(
+        "click",
+        e => {
+          // e.stopPropagation();
+          console.log(`parent is clicked`);
+        }
+        // { capture: true }
+      );
       child.addEventListener("click", e => {
-        e.stopPropagation();
+        // e.stopPropagation();
         console.log(`child is clicked`);
       });
 
