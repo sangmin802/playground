@@ -31,6 +31,7 @@
       grandParent.addEventListener(
         "click",
         e => {
+          console.log(e.currentTarget);
           // e.stopPropagation();
           console.log("grandParent is clicked");
         },
@@ -39,7 +40,7 @@
       parent.addEventListener(
         "click",
         e => {
-          // e.stopPropagation();
+          e.stopPropagation();
           console.log(`parent is clicked`);
         }
         // { capture: true }

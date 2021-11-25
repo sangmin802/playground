@@ -52,6 +52,7 @@
     const divWrap = document.querySelector(".divWrap");
     const callback = entries => {
       entries.forEach((entry, index) => {
+        console.log(entry.intersectionRatio);
         if (entry.intersectionRatio > 0) {
           divWrap.innerHTML += `<div class="div${index + 2} div"></div>`;
         }
