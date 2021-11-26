@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function promise() {
+        return new Promise((res, rej) => {
+          fetch("./json/json1.json")
+            .then(json => {
+              console.log("fetch의 비동기 then1");
+              return json.json();
+            })
+            .then(() => {
+              console.log("fetch의 비동기 then2");
+              return res();
+            });
+        });
+      }
+
+      function microTaskDone(num) {
+        console.log(`MicroTask done`);
+      }
+
+      function task() {
+        setTimeout(() => {
+          console.log("Task done");
+        });
+      }
+
+      function done() {
+        console.log("Stack Done");
+      }
+
+      function start() {
+        promise().then(microTaskDone);
+
+        task();
+
+        done();
+      }
+
+      start();
+      console.log("main done");
+    </script>
+  </body>
+</html>
