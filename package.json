@@ -1,5 +1,5 @@
 {
-  "name": "prac",
+  "name": "playground",
   "version": "0.1.0",
   "type": "module",
   "private": true,
@@ -12,7 +12,8 @@
     "react-dom": "^16.12.0",
     "react-redux": "^7.1.3",
     "react-scripts": "3.3.1",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "typescript": "^4.5.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -34,5 +35,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "frontend playground",
+  "main": "script.js",
+  "author": "",
+  "license": "ISC"
 }

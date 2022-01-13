@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      * {
+        margin: 0;
+      }
+      .div {
+        height: 2000px;
+      }
+      .div:nth-child(1) {
+        background-color: tan;
+      }
+      .div:nth-child(2) {
+        background-color: teal;
+      }
+      .div:nth-child(3) {
+        background-color: thistle;
+      }
+      .observer {
+        position: absolute;
+        top: 50px;
+      }
+      .menu {
+        width: 100%;
+        height: 50px;
+        position: absolute;
+        top: 50px;
+        background: tomato;
+        text-align: center;
+        line-height: 50px;
+      }
+      .fixed {
+        position: fixed;
+        top: 0;
+        left: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="divWrap">
+      <div class="div1 div">
+        <div class="observer"></div>
+        <div class="menu">menu</div>
+      </div>
+      <div class="div2 div"></div>
+      <div class="div3 div"></div>
+      <div class="div4 div"></div>
+    </div>
+  </body>
+  <script>
+    let options = {
+      rootMargin: "0px",
+      threshold: 0,
+    };
+    const target = document.querySelector(".observer");
+    const menu = document.querySelector(".menu");
+    const callback = entries => {
+      entries.forEach((entry, index) => {
+        if (entry.boundingClientRect.top >= 0) {
+          menu.classList.remove("fixed");
+        } else {
+          menu.classList.add("fixed");
+        }
+      });
+    };
+    let observer = new IntersectionObserver(callback, options);
+    observer.observe(target);
+    // observer.unobserve(target);
+    // observer.disconnect();
+  </script>
+</html>

@@ -1,31 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <style>
-    #el {
-      width : 50px;
-      height : 50px;
-      background : tomato;
-    }
-  </style>
-</head>
-<body>
-  <!-- 종종 setinterval로 애니메이션을 주려고 할 때, 재귀함수를 사용할 수 없어서 불편했다. 앞으로는 이 api를 사용하면 될듯! -->
-  <div id="el"></div>
-  <script>
-    const el = document.querySelector('#el');
-    let left = 0;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #el {
+        width: 50px;
+        height: 50px;
+        left: 0;
+        background: tomato;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 종종 setinterval로 애니메이션을 주려고 할 때, 재귀함수를 사용할 수 없어서 불편했다. 앞으로는 이 api를 사용하면 될듯! -->
+    <div id="el"></div>
+    <script>
+      const el = document.querySelector("#el");
+      let left = 0;
 
-    function frame(){
-      left += 1;
-      el.style.setProperty('transform', 'translateX(' + left + 'px)');
+      function frame() {
+        left += 1;
+        el.style.setProperty("left", `${left}px`);
 
-      left < 100 ? window.requestAnimationFrame(frame) : null;
-    }
-    window.requestAnimationFrame(frame);
-  </script>
-</body>
+        // 아래 두개 동일한 결과
+        // el.style.setProperty('transform', `translateX(${left}px)`);
+        // el.style.transform = `translateX(${left}px`;
+
+        left < 100 ? window.requestAnimationFrame(frame) : null;
+      }
+      window.requestAnimationFrame(frame);
+
+      // function setTimeoutCallback() {
+      //   if (left > 100) return;
+      //   console.log("?");
+      //   setTimeout(() => {
+      //     left += 1;
+      //     // el.style.setProperty("left", `${left}px`);
+      //     el.style.setProperty("transform", `translateX(${left}px)`);
+      //     setTimeoutCallback();
+      //   });
+      // }
+      // setTimeoutCallback();
+
+      // transform과 같은 속성들은 컴포지팅만 다시 작동되어 reflow 발생 안함
+    </script>
+  </body>
 </html>

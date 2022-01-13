@@ -1,9 +1,7 @@
 type Test<D, M> = {
-  data : D
-  value : D & M
-}
+  data: D;
+};
 
-let test : Test<string, number> = {
-  data : '문자열',
-  value : null
-}
+let test: Test<string, number> = {
+  data: "문자열",
+};
