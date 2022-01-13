@@ -5,47 +5,94 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      .box {
+        width: 960px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        grid-gap: 10px;
+      }
+      .box > div {
+        position: relative;
+        padding-top: 100%;
+      }
+      img {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    </style>
   </head>
   <body>
-    <script>
-      function promise() {
-        return new Promise((res, rej) => {
-          fetch("./json/json1.json")
-            .then(json => {
-              console.log("fetch의 비동기 then1");
-              return json.json();
-            })
-            .then(() => {
-              console.log("fetch의 비동기 then2");
-              return res();
-            });
-        });
-      }
+    <div class="box">
+      <div>
+        <img
+          class="img1"
+          src="D:\IamDeveloper\공부\playground\img\dog-star\KakaoTalk_20220109_104423197_15.jpg"
+          alt=""
+        />
+      </div>
+      <div>
+        <img
+          class="img2"
+          src="D:\IamDeveloper\공부\playground\img\dog-star\KakaoTalk_20220109_104423197_15.jpg"
+          alt=""
+        />
+      </div>
+      <div>
+        <img
+          class="img2"
+          src="D:\IamDeveloper\공부\playground\img\dog-star\KakaoTalk_20220109_104423197_15.jpg"
+          alt=""
+        />
+      </div>
+      <div>
+        <img
+          class="img1"
+          src="D:\IamDeveloper\공부\playground\img\dog-star\KakaoTalk_20220109_104423197_15.jpg"
+          alt=""
+        />
+      </div>
+      <div>
+        <img
+          class="img2"
+          src="D:\IamDeveloper\공부\playground\img\dog-star\KakaoTalk_20220109_104423197_15.jpg"
+          alt=""
+        />
+      </div>
+      <div>
+        <img
+          class="img2"
+          src="D:\IamDeveloper\공부\playground\img\dog-star\KakaoTalk_20220109_104423197_15.jpg"
+          alt=""
+        />
+      </div>
+      <div>
+        <img
+          class="img1"
+          src="D:\IamDeveloper\공부\playground\img\dog-star\KakaoTalk_20220109_104423197_15.jpg"
+          alt=""
+        />
+      </div>
+      <div>
+        <img
+          class="img2"
+          src="D:\IamDeveloper\공부\playground\img\dog-star\KakaoTalk_20220109_104423197_15.jpg"
+          alt=""
+        />
+      </div>
+      <div>
+        <img
+          class="img2"
+          src="D:\IamDeveloper\공부\playground\img\dog-star\KakaoTalk_20220109_104423197_15.jpg"
+          alt=""
+        />
+      </div>
+    </div>
 
-      function microTaskDone(num) {
-        console.log(`MicroTask done`);
-      }
-
-      function task() {
-        setTimeout(() => {
-          console.log("Task done");
-        });
-      }
-
-      function done() {
-        console.log("Stack Done");
-      }
-
-      function start() {
-        promise().then(microTaskDone);
-
-        task();
-
-        done();
-      }
-
-      start();
-      console.log("main done");
-    </script>
+    <script></script>
   </body>
 </html>
